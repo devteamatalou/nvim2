@@ -59,5 +59,28 @@ return require('packer').startup(function(use)
 		}
 	}
 
+   -- telescope project plugin
+
+   use {
+      "ahmedkhalf/project.nvim",
+      config = function()
+         require("project_nvim").setup {
+            -- Optional: detect project root by these patterns
+            patterns = { ".git", "_darcs", ".hg", ".bzr", ".svn", "Makefile", "package.json" },
+         }
+      end
+   }
+
+   -- autopairs plugin 
+
+
+   use {
+      "windwp/nvim-autopairs",
+      config = function()
+         require("nvim-autopairs").setup {}
+      end
+   }
+
+
 
 end)

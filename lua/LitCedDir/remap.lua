@@ -24,3 +24,7 @@ vim.keymap.set("n", "<leader>p", "\"+p", {desc = "Paste from system clipboard"})
 --setting the esc key to be the jk combination for faster switch to normal mode
 
 vim.keymap.set("i", "jk", "<Esc>", {desc = "the new way to go to normal mode when in insert mode"})
+
+-- set the command line to be ; only instead to be shift + ;
+
+vim.keymap.set("n", ";", ":", { desc = "Enter command mode with semicolon" })

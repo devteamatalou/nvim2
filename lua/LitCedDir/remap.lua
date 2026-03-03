@@ -15,4 +15,4 @@ vim.keymap.set("n", "N", "Nzzzv", {desc = "Set the cursor to the middle when sea
 vim.keymap.set("n", "<leader>y", "\"+y", {desc = "Copy selected text into system clipboard"})
 vim.keymap.set("v", "<leader>y", "\"+y", {desc = "Copy selected text into system clipboard"})
 vim.keymap.set("n", "<leader>Y", "\"+Y", {desc = "Copy selected text into system clipboard"})
-
+vim.keymap.set("i", "jk", "<Esc>", {desc = "the new way to go to normal mode when in insert mode"})

@@ -34,7 +34,7 @@ return require('packer').startup(function(use)
 
 	use('mbbill/undotree')
 	use('tpope/vim-fugitive')
-   use {"lukas-reineke/indent-blankline.nvim", opt = {}}
+   use {"lukas-reineke/indent-blankline.nvim"}
 
 	use {
 		'VonHeikemen/lsp-zero.nvim',

@@ -34,7 +34,7 @@ return require('packer').startup(function(use)
 
 	use('mbbill/undotree')
 	use('tpope/vim-fugitive')
-    use ("lukas-reineke/indent-blankline.nvim")
+   use {"lukas-reineke/indent-blankline.nvim", opt = {}}
 
 	use {
 		'VonHeikemen/lsp-zero.nvim',
@@ -81,6 +81,39 @@ return require('packer').startup(function(use)
       end
    }
 
+   --which key plugin (to learn the keybinds etc)
 
+   use {
+      "folke/which-key.nvim",
+      config = function()
+         vim.o.timeout = true
+         vim.o.timeoutlen = 300
+         require("which-key").setup {
+            -- your configuration comes here
+            -- or leave it empty to use the default settings
+         }
+      end
+   }
+   
+   -- this is buff plugin (tab on top fo the file)
 
+   use({
+      'akinsho/bufferline.nvim',
+      tag = "*",
+      requires = 'nvim-tree/nvim-web-devicons'
+   })
+
+   -- this make the bottom line status, git line good looking
+  
+   use({
+      'nvim-lualine/lualine.nvim',
+      requires = { 'nvim-tree/nvim-web-devicons', opt = true }
+   })
+
+   --autotag plugin
+
+   use('windwp/nvim-ts-autotag')
+
+   --conform plugin
+   use('stevearc/conform.nvim')
 end)

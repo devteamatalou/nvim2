@@ -1,4 +1,4 @@
-require("LitCedDir.packer")
+require("LitCedDir.lazy")
 require("LitCedDir.remap")
 require("LitCedDir.set")
 require("LitCedDir.autocmds")

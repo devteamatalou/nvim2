@@ -1,4 +1,4 @@
-## prerequesite 
+## prerequesite
 1- packer plugin manager
 
 
@@ -12,17 +12,17 @@ found out that when getting the permission denied for the treesitter you can run
 Remove-Item -Recurse -Force "$env:LOCALAPPDATA\Temp\nvim"
 $env:CC="clang"
 
-## My keybinds from this config and global config to remember 
+## My keybinds from this config and global config to remember
 
 
 # LSP
- 1- Signature help = ctrl + h "i"
- 2- diagnostic = space + v + d "n"
- 3- diagnostic = space + v + d "n"
- 4- Definition = g + d "n"
- 5- Go to Next= [ + d "n"
- 6- Go to Previous= ] + d "n"
- 7- Rename = space + v + r + r "n"
+ 1- Signature help = ctrl + h        "i"
+ 2- diagnostic = space + v + d   "n"
+ 3- diagnostic = space + v + d   "n"
+ 4- Definition = g + d                  "n"
+ 5- Go to Next= [ + d                  "n"
+ 6- Go to Previous= ] + d            "n"
+ 7- Rename = space + v + r + r  "n"
 
 # NAV
 
@@ -38,7 +38,7 @@ $env:CC="clang"
 3- insert at the end of the word = ea
 
 
-# del 
+# del
 
 1- Delete Inside = di"
 2- Delete Around = da"
@@ -81,10 +81,18 @@ q => quit(stop right there)
 L => Replace this one and stop
 
 
-# Important summary 
+# Important summary
 
-i = inside 
+i = inside
 a = around
 t = till
+
+# how to select and edit next occurence
+
+1- Place your cursor on the word.
+2- Press * to highlight all occurrences of that word in the file.
+3-Press cgn to change the current one.
+4-Type your new word.
+5- Press . to repeat the change on the next highlighted word.
 
 go to this link to learn more about the keybinds https://vim.rtorr.com/

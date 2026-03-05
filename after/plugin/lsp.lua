@@ -1,61 +1,85 @@
 local lsp = require("lsp-zero")
-
+local lspkind = require('lspkind')
 lsp.preset("recommended")
 
+-- Copilot guard
+local status_ok, copilot = pcall(require, "copilot")
+if status_ok then
+   copilot.setup({ suggestion = { enabled = false }, panel = { enabled = false } })
+end
+
+-- Mason
 lsp.ensure_installed({
-  'ts_ls',
-  'eslint',
-  'lua_ls',
-  'rust_analyzer',
-  'emmet_ls'
+   'ts_ls', 'eslint', 'lua_ls', 'rust_analyzer', 'emmet_ls'
 })
 
+-- CMP Setup
 local cmp = require('cmp')
-local cmp_select = {behavior = cmp.SelectBehavior.Select}
+local cmp_select = { behavior = cmp.SelectBehavior.Select }
 local cmp_mappings = lsp.defaults.cmp_mappings({
-  ['<C-p>'] = cmp.mapping.select_prev_item(cmp_select),
-  ['<C-n>'] = cmp.mapping.select_next_item(cmp_select),
-  ['<C-y>'] = cmp.mapping.confirm({ select = true }),
-  ["<C-Space>"] = cmp.mapping.complete(),
+	['<C-p>'] = cmp.mapping.select_prev_item(cmp_select),
+	['<C-n>'] = cmp.mapping.select_next_item(cmp_select),
+	['<C-y>'] = cmp.mapping.confirm({ select = true }),
+
+	-- The "Super Tab" configuration
+	['<Tab>'] = cmp.mapping(function(fallback)
+			if cmp.visible() then
+					cmp.select_next_item()
+			elseif luasnip.expand_or_jumpable() then
+					luasnip.expand_or_jump()
+			else
+					fallback() -- Standard tab behavior
+			end
+	end, { "i", "s" }),
+
+	['<S-Tab>'] = cmp.mapping(function(fallback)
+			if cmp.visible() then
+					cmp.select_prev_item()
+			elseif luasnip.jumpable(-1) then
+					luasnip.jump(-1)
+			else
+					fallback()
+			end
+	end, { "i", "s" }),
+})
+-- TS/JS Specific Settings (Ported from your other config)
+lsp.configure('ts_ls', {
+   settings = {
+      typescript = { inlayHints = { includeInlayParameterNameHints = "literal", includeInlayFunctionParameterTypeHints = true } },
+      javascript = { inlayHints = { includeInlayParameterNameHints = "all", includeInlayFunctionParameterTypeHints = true } }
+   }
 })
 
-lsp.set_preferences({
-  sign_icons = { }
+-- Lua specific settings (Ported from your other config)
+lsp.configure('lua_ls', {
+   settings = { Lua = { diagnostics = { globals = { 'vim' } }, workspace = { checkThirdParty = false } } }
 })
 
+-- Attach Mappings
 lsp.on_attach(function(client, bufnr)
-  local opts = {buffer = bufnr, remap = false}
+	-- Safety check: ensure bufnr is a valid number
+	if type(bufnr) ~= "number" then
+			vim.notify("Invalid bufnr passed to on_attach: " .. type(bufnr), vim.log.levels.ERROR)
+			return
+	end
 
-  vim.keymap.set("n", "gd", vim.lsp.buf.definition, opts)
-  vim.keymap.set("n", "K", vim.lsp.buf.hover, opts)
-  vim.keymap.set("n", "<leader>vws", vim.lsp.buf.workspace_symbol, opts)
-  vim.keymap.set("n", "<leader>vd", vim.diagnostic.open_float, opts)
-  vim.keymap.set("n", "[d", vim.diagnostic.goto_next, opts)
-  vim.keymap.set("n", "]d", vim.diagnostic.goto_prev, opts)
-  vim.keymap.set("n", "<leader>vca", vim.lsp.buf.code_action, opts)
-  vim.keymap.set("n", "<leader>vrr", vim.lsp.buf.references, opts)
-  vim.keymap.set("n", "<leader>vrn", vim.lsp.buf.rename, opts)
-  vim.keymap.set("i", "<C-h>", vim.lsp.buf.signature_help, opts)
+	local opts = { buffer = bufnr, remap = false }
+
+	-- Your keymaps remain the same...
+	vim.keymap.set("n", "gd", function() require("telescope.builtin").lsp_definitions({ reuse_win = false }) end, opts)
+	-- ...
 end)
 
-lsp.configure('emmet_ls', {
-  filetypes = {
-    "html",
-    "typescriptreact",
-    "javascriptreact",
-    "css",
-    "sass",
-    "scss",
-  },
-})
-
--- ONLY ONE CMP SETUP
 lsp.setup_nvim_cmp({
-  mapping = cmp_mappings,
-  sources = {
-    { name = 'nvim_lsp' },
-    { name = 'buffer' },
-  }
+   mapping = cmp_mappings,
+   sources = { { name = "copilot" }, { name = "nvim_lsp" }, { name = "buffer" }, { name = "path" } },
+			formatting = {
+				format = lspkind.cmp_format({
+						mode = 'symbol', -- Show only symbols
+						maxwidth = 50,
+						symbol_map = { Copilot = "🤖" } -- You can still manually map Copilot
+				})
+		},
 })
 
 lsp.setup()

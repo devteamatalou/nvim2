@@ -28,3 +28,5 @@ vim.keymap.set("i", "jk", "<Esc>", {desc = "the new way to go to normal mode whe
 -- set the command line to be ; only instead to be shift + ;
 
 vim.keymap.set("n", ";", ":", { desc = "Enter command mode with semicolon" })
+
+vim.g.copilot_no_tab_map = true

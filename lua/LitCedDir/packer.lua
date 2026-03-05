@@ -1,79 +1,74 @@
 vim.cmd [[packadd packer.nvim]]
 
 return require('packer').startup(function(use)
-	-- Packer can manage itself
-	use 'wbthomason/packer.nvim'
+   -- packer
+   use 'wbthomason/packer.nvim'
 
-	--telescope plugin
+   -- telescope
+   use {
+      'nvim-telescope/telescope.nvim',
+      requires = { { 'nvim-lua/plenary.nvim' } }
+   }
 
-	use{
-		'nvim-telescope/telescope.nvim',
-		requires = {{'nvim-lua/plenary.nvim'}}
-	}
+   -- theme
+   use({
+      'rose-pine/neovim',
+      as = 'rose-pine',
+      config = function()
+         vim.cmd("colorscheme rose-pine")
+      end
+   })
 
-	--color scheme rose pine(theme)
+   -- treesitter
+   use {
+      'nvim-treesitter/nvim-treesitter',
+      run = ':TSUpdate'
+   }
 
-	use({
-		'rose-pine/neovim',
-		as = 'rose-pine',
-		config = function()
-			vim.cmd("colorscheme rose-pine")
-		end
-	})
+   use({
+      'ThePrimeagen/harpoon',
+      requires = { { "nvim-lua/plenary.nvim" } }
+   })
 
-	--treesitter plugin
-	use {
-		'nvim-treesitter/nvim-treesitter',
-		run = ':TSUpdate'
-	}
+   use('mbbill/undotree')
+   use('tpope/vim-fugitive')
 
-	use({
-		'ThePrimeagen/harpoon',
-		requires = {{"nvim-lua/plenary.nvim"}} 
-	})
+   use { "lukas-reineke/indent-blankline.nvim" }
 
-	use('mbbill/undotree')
-	use('tpope/vim-fugitive')
-   use {"lukas-reineke/indent-blankline.nvim"}
+   -- LSP ZERO
+   use {
+      'VonHeikemen/lsp-zero.nvim',
+      branch = 'v1.x',
+      requires = {
+         { 'neovim/nvim-lspconfig' },
+         { 'williamboman/mason.nvim' },
+         { 'williamboman/mason-lspconfig.nvim' },
 
-	use {
-		'VonHeikemen/lsp-zero.nvim',
-		branch = 'v1.x',
-		requires = {
-			-- LSP Support
-			{'neovim/nvim-lspconfig'},             
-			{'williamboman/mason.nvim'},           
-			{'williamboman/mason-lspconfig.nvim'}, 
+         -- completion
+         { 'hrsh7th/nvim-cmp' },
+         { 'hrsh7th/cmp-nvim-lsp' },
+         { 'hrsh7th/cmp-buffer' },
+         { 'hrsh7th/cmp-path' },
+         { 'saadparwaiz1/cmp_luasnip' },
+         { 'hrsh7th/cmp-nvim-lua' },
 
-			-- Autocompletion
-			{'hrsh7th/nvim-cmp'},         -- Required
-			{'hrsh7th/cmp-nvim-lsp'},     -- Required
-			{'hrsh7th/cmp-buffer'},       -- Optional
-			{'hrsh7th/cmp-path'},         -- Optional
-			{'saadparwaiz1/cmp_luasnip'}, -- Optional
-			{'hrsh7th/cmp-nvim-lua'},     -- Optional
+         -- snippets
+         { 'L3MON4D3/LuaSnip' },
+         { 'rafamadriz/friendly-snippets' },
+      }
+   }
 
-			-- Snippets
-			{'L3MON4D3/LuaSnip'},             -- Required
-			{'rafamadriz/friendly-snippets'}, -- Optional
-		}
-	}
-
-   -- telescope project plugin
-
+   -- PROJECT ROOT
    use {
       "ahmedkhalf/project.nvim",
       config = function()
          require("project_nvim").setup {
-            -- Optional: detect project root by these patterns
-            patterns = { ".git", "_darcs", ".hg", ".bzr", ".svn", "Makefile", "package.json" },
+            patterns = { ".git", "Makefile", "package.json" },
          }
       end
    }
 
-   -- autopairs plugin 
-
-
+   -- AUTOPAIRS
    use {
       "windwp/nvim-autopairs",
       config = function()
@@ -81,39 +76,103 @@ return require('packer').startup(function(use)
       end
    }
 
-   --which key plugin (to learn the keybinds etc)
-
+   -- WHICH KEY
    use {
       "folke/which-key.nvim",
       config = function()
          vim.o.timeout = true
          vim.o.timeoutlen = 300
-         require("which-key").setup {
-            -- your configuration comes here
-            -- or leave it empty to use the default settings
-         }
+         require("which-key").setup {}
       end
    }
-   
-   -- this is buff plugin (tab on top fo the file)
 
+   -- BUFFERLINE
    use({
       'akinsho/bufferline.nvim',
       tag = "*",
       requires = 'nvim-tree/nvim-web-devicons'
    })
 
-   -- this make the bottom line status, git line good looking
-  
+   -- LUALINE
    use({
       'nvim-lualine/lualine.nvim',
       requires = { 'nvim-tree/nvim-web-devicons', opt = true }
    })
 
-   --autotag plugin
-
+   -- AUTOTAG
    use('windwp/nvim-ts-autotag')
 
-   --conform plugin
+   -- FORMATTER
    use('stevearc/conform.nvim')
+
+   -------------------------------------------------
+   -- COPILOT
+   -------------------------------------------------
+
+   use {
+      "zbirenbaum/copilot.lua",
+      config = function()
+         require("copilot").setup({
+            suggestion = { enabled = false },
+            panel = { enabled = false },
+         })
+      end,
+   }
+
+   use {
+      "zbirenbaum/copilot-cmp",
+      after = { "copilot.lua" },
+      config = function()
+         require("copilot_cmp").setup()
+      end
+   }
+
+
+   -- 2. Use the CMP bridge
+   use {
+      "zbirenbaum/copilot-cmp",
+      after = { "copilot.lua" },
+      config = function()
+         require("copilot_cmp").setup()
+      end
+   }
+
+
+
+    -- terminal package
+   use {
+      "akinsho/toggleterm.nvim",
+      tag = '*',
+   }
+
+   --package tree sitter
+   use {
+      "nvim-tree/nvim-tree.lua",
+      requires = "nvim-tree/nvim-web-devicons",
+
+   }
+   --Dashboard plugin
+   use {
+      "goolord/alpha-nvim",
+      requires = "nvim-tree/nvim-web-devicons",
+   }
+
+			--noice plugin
+
+			use {
+				"folke/noice.nvim",
+				requires = {
+						"MunifTanjim/nui.nvim",
+						"rcarriga/nvim-notify",
+				},
+		}
+
+   --notify package
+
+   use 'rcarriga/nvim-notify'
+   use 'numtoStr/Comment.nvim'
+   use 'JoosepAlviste/nvim-ts-context-commentstring'
+			use 'onsails/lspkind.nvim'
+
+
 end)

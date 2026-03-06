@@ -1,85 +1,98 @@
-local lsp = require("lsp-zero")
-local lspkind = require('lspkind')
-lsp.preset("recommended")
+-- lsp.lua
+-- Full LSP + Blink + nvim-cmp + conform integration
+-- Assumes nvim-cmp and conform are configured separately
 
--- Copilot guard
-local status_ok, copilot = pcall(require, "copilot")
-if status_ok then
-   copilot.setup({ suggestion = { enabled = false }, panel = { enabled = false } })
+-- =====================
+-- Blink.nvim (inlay hints)
+-- =====================
+local blink_ok, blink = pcall(require, "blink.cmp")
+if not blink_ok then return end
+
+local function attach_blink(client, bufnr)
+   if client.server_capabilities.inlayHintProvider then
+      blink.on_attach(client, bufnr)
+   end
 end
 
--- Mason
-lsp.ensure_installed({
-   'ts_ls', 'eslint', 'lua_ls', 'rust_analyzer', 'emmet_ls'
+local capabilities = blink.get_lsp_capabilities()
+
+-- =====================
+-- LSP servers
+-- =====================
+local lspconfig_ok, lspconfig = pcall(require, "lspconfig")
+if not lspconfig_ok then return end
+
+-- Common on_attach for all servers
+local function common_on_attach(client, bufnr)
+   attach_blink(client, bufnr)
+   vim.api.nvim_buf_set_option(bufnr, "omnifunc", "v:lua.vim.lsp.omnifunc")
+
+   -- Lua formatting on save
+   if vim.bo.filetype == "lua" then
+      vim.api.nvim_create_autocmd("BufWritePre", {
+         buffer = bufnr,
+         callback = function()
+            vim.lsp.buf.format({ bufnr = bufnr, id = client.id })
+         end,
+      })
+   end
+
+   -- PHP / Blade formatting with fallback to conform.nvim
+   if vim.bo.filetype == "php" or vim.bo.filetype == "blade" then
+      vim.api.nvim_create_autocmd("BufWritePre", {
+         buffer = bufnr,
+         callback = function()
+            local ok, _ = pcall(vim.lsp.buf.format)
+            if not ok then
+               local conform_ok, conform = pcall(require, "conform")
+               if conform_ok then
+                  conform.format({ async = false })
+               end
+            end
+         end,
+      })
+   end
+end
+
+-- =====================
+-- Lua LSP
+-- =====================
+lspconfig.lua_ls.setup({
+   capabilities = capabilities,
+   on_attach = common_on_attach,
 })
 
--- CMP Setup
-local cmp = require('cmp')
-local cmp_select = { behavior = cmp.SelectBehavior.Select }
-local cmp_mappings = lsp.defaults.cmp_mappings({
-	['<C-p>'] = cmp.mapping.select_prev_item(cmp_select),
-	['<C-n>'] = cmp.mapping.select_next_item(cmp_select),
-	['<C-y>'] = cmp.mapping.confirm({ select = true }),
-
-	-- The "Super Tab" configuration
-	['<Tab>'] = cmp.mapping(function(fallback)
-			if cmp.visible() then
-					cmp.select_next_item()
-			elseif luasnip.expand_or_jumpable() then
-					luasnip.expand_or_jump()
-			else
-					fallback() -- Standard tab behavior
-			end
-	end, { "i", "s" }),
-
-	['<S-Tab>'] = cmp.mapping(function(fallback)
-			if cmp.visible() then
-					cmp.select_prev_item()
-			elseif luasnip.jumpable(-1) then
-					luasnip.jump(-1)
-			else
-					fallback()
-			end
-	end, { "i", "s" }),
-})
--- TS/JS Specific Settings (Ported from your other config)
-lsp.configure('ts_ls', {
-   settings = {
-      typescript = { inlayHints = { includeInlayParameterNameHints = "literal", includeInlayFunctionParameterTypeHints = true } },
-      javascript = { inlayHints = { includeInlayParameterNameHints = "all", includeInlayFunctionParameterTypeHints = true } }
-   }
+-- =====================
+-- TypeScript / JavaScript
+-- =====================
+lspconfig.tsserver.setup({
+   capabilities = capabilities,
+   on_attach = common_on_attach,
 })
 
--- Lua specific settings (Ported from your other config)
-lsp.configure('lua_ls', {
-   settings = { Lua = { diagnostics = { globals = { 'vim' } }, workspace = { checkThirdParty = false } } }
+lspconfig.eslint.setup({
+   capabilities = capabilities,
+   on_attach = common_on_attach,
 })
 
--- Attach Mappings
-lsp.on_attach(function(client, bufnr)
-	-- Safety check: ensure bufnr is a valid number
-	if type(bufnr) ~= "number" then
-			vim.notify("Invalid bufnr passed to on_attach: " .. type(bufnr), vim.log.levels.ERROR)
-			return
-	end
-
-	local opts = { buffer = bufnr, remap = false }
-
-	-- Your keymaps remain the same...
-	vim.keymap.set("n", "gd", function() require("telescope.builtin").lsp_definitions({ reuse_win = false }) end, opts)
-	-- ...
-end)
-
-lsp.setup_nvim_cmp({
-   mapping = cmp_mappings,
-   sources = { { name = "copilot" }, { name = "nvim_lsp" }, { name = "buffer" }, { name = "path" } },
-			formatting = {
-				format = lspkind.cmp_format({
-						mode = 'symbol', -- Show only symbols
-						maxwidth = 50,
-						symbol_map = { Copilot = "🤖" } -- You can still manually map Copilot
-				})
-		},
+-- =====================
+-- PHP LSP (Intelephense)
+-- =====================
+lspconfig.intelephense.setup({
+   capabilities = capabilities,
+   on_attach = common_on_attach,
+   filetypes = { "php", "blade" },
 })
 
-lsp.setup()
+-- =====================
+-- HTML / JSON
+-- =====================
+lspconfig.html.setup({
+   capabilities = capabilities,
+   on_attach = common_on_attach,
+})
+
+lspconfig.jsonls.setup({
+   capabilities = capabilities,
+   on_attach = common_on_attach,
+})

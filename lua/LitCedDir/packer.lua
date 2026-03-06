@@ -76,16 +76,6 @@ return require('packer').startup(function(use)
       end
    }
 
-   -- WHICH KEY
-   use {
-      "folke/which-key.nvim",
-      config = function()
-         vim.o.timeout = true
-         vim.o.timeoutlen = 300
-         require("which-key").setup {}
-      end
-   }
-
    -- BUFFERLINE
    use({
       'akinsho/bufferline.nvim',
@@ -139,7 +129,7 @@ return require('packer').startup(function(use)
 
 
 
-    -- terminal package
+   -- terminal package
    use {
       "akinsho/toggleterm.nvim",
       tag = '*',
@@ -157,22 +147,26 @@ return require('packer').startup(function(use)
       requires = "nvim-tree/nvim-web-devicons",
    }
 
-			--noice plugin
+   --noice plugin
 
-			use {
-				"folke/noice.nvim",
-				requires = {
-						"MunifTanjim/nui.nvim",
-						"rcarriga/nvim-notify",
-				},
-		}
+   use {
+      "folke/noice.nvim",
+      requires = {
+         "MunifTanjim/nui.nvim",
+         "rcarriga/nvim-notify",
+      },
+   }
 
    --notify package
 
    use 'rcarriga/nvim-notify'
    use 'numtoStr/Comment.nvim'
    use 'JoosepAlviste/nvim-ts-context-commentstring'
-			use 'onsails/lspkind.nvim'
+   use 'onsails/lspkind.nvim'
 
-
+   -- adding blink package
+   use {
+      "saghen/blink.nvim",
+      requires = { "neovim/nvim-lspconfig" },
+   }
 end)

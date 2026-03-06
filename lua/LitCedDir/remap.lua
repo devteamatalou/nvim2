@@ -29,4 +29,17 @@ vim.keymap.set("i", "jk", "<Esc>", {desc = "the new way to go to normal mode whe
 
 vim.keymap.set("n", ";", ":", { desc = "Enter command mode with semicolon" })
 
+vim.keymap.set("n", "<C-S-p>", ":PackerSync<CR>", { desc = "Run PackerSync command" })
+
+vim.keymap.set("n", "<leader>nh", ":nohl<CR>", { desc = "Clear search highlight" })
+
+vim.keymap.set("n", "<A-j>", ":m .+1<CR>==")
+vim.keymap.set("n", "<A-k>", ":m .-2<CR>==")
+
+-- this is for saving the files
+
+vim.keymap.set("n", "<leader>w", ":w<CR>", {silent = true})
+
+-- quit vim 
+vim.keymap.set("n", "<leader>q", ":q<CR>", {silent = true})
 vim.g.copilot_no_tab_map = true

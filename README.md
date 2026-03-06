@@ -1,98 +1,156 @@
-## prerequesite
-1- packer plugin manager
+# My Neovim Configuration
 
+## Prerequisite
 
+1. **Packer plugin manager**
+
+```powershell
 git clone https://github.com/wbthomason/packer.nvim "$env:LOCALAPPDATA\nvim-data\site\pack\packer\start\packer.nvim"
 
 
-## tips
-
-found out that when getting the permission denied for the treesitter you can run the following command to make it work in the powershell
+2. **if you get denied for the treesitter**
 
 Remove-Item -Recurse -Force "$env:LOCALAPPDATA\Temp\nvim"
 $env:CC="clang"
 
-## My keybinds from this config and global config to remember
+## File Explorer
+
+| Key          | Mode   | Action                  |
+| ------------ | ------ | ----------------------- |
+| `<leader>ee` | Normal | Toggle file explorer    |
+| `<leader>pv` | Normal | Open directory explorer |
+
+## Navigation
+
+| Key     | Mode   | Action                                  |
+| ------- | ------ | --------------------------------------- |
+| `<C-d>` | Normal | Scroll half page down and center cursor |
+| `<C-u>` | Normal | Scroll half page up and center cursor   |
+
+## Search
+
+| Key          | Mode   | Action                            |
+| ------------ | ------ | --------------------------------- |
+| `n`          | Normal | Next search result (centered)     |
+| `N`          | Normal | Previous search result (centered) |
+| `<leader>nh` | Normal | Clear search highlight            |
+
+## ClipBoard(System)
+
+| Key         | Mode            | Action                             |
+| ----------- | --------------- | ---------------------------------- |
+| `<leader>y` | Normal / Visual | Copy selection to system clipboard |
+| `<leader>Y` | Normal          | Copy line to system clipboard      |
+| `<leader>p` | Normal          | Paste from system clipboard        |
+
+## Insert Mode
+
+| Key  | Mode   | Action                    |
+| ---- | ------ | ------------------------- |
+| `jk` | Insert | Exit insert mode (Escape) |
+
+## Command Mode
+
+| Key | Mode   | Action             |
+| --- | ------ | ------------------ |
+| `;` | Normal | Enter command mode |
+
+## Editing
+
+| Key     | Mode   | Action                 |
+| ------- | ------ | ---------------------- |
+| `<A-j>` | Normal | Move current line down |
+| `<A-k>` | Normal | Move current line up   |
+
+## File Management
+
+| Key         | Mode   | Action      |
+| ----------- | ------ | ----------- |
+| `<leader>w` | Normal | Save file   |
+| `<leader>q` | Normal | Quit Neovim |
+
+## Formatting
+
+| Key         | Mode            | Action      |
+| ----------- | --------------- | ----------- |
+| `<leader>f` | Normal / Visual | Format code |
+
+## LSP Navigation
+
+| Key  | Mode   | Action                   |
+| ---- | ------ | ------------------------ |
+| `gd` | Normal | Go to definition         |
+| `K`  | Normal | Show hover documentation |
+| `gr` | Normal | Show references          |
+
+## LSP Action
+
+| Key          | Mode   | Action        |
+| ------------ | ------ | ------------- |
+| `<leader>rn` | Normal | Rename symbol |
+| `<leader>ca` | Normal | Code actions  |
+
+## Diagnostics
+
+| Key         | Mode   | Action                |
+| ----------- | ------ | --------------------- |
+| `<leader>e` | Normal | Show diagnostic popup |
+| `[d`        | Normal | Previous diagnostic   |
+| `]d`        | Normal | Next diagnostic       |
+| `<leader>d` | Normal | Show diagnostics list |
+
+## AutoComplete Navigation (nvim-cmp)
+
+| Key     | Mode   | Action                     |
+| ------- | ------ | -------------------------- |
+| `<C-p>` | Insert | Select previous completion |
+| `<C-n>` | Insert | Select next completion     |
+| `<C-y>` | Insert | Confirm completion         |
+
+## Snippet/Super Tap(LuaSnip)
+
+| Key       | Mode   | Action                                   |
+| --------- | ------ | ---------------------------------------- |
+| `<Tab>`   | Insert | Next completion or expand snippet        |
+| `<S-Tab>` | Insert | Previous completion or jump back snippet |
+
+## Plugin Management (Packer)
+
+| Key       | Mode   | Action           |
+| --------- | ------ | ---------------- |
+| `<C-S-p>` | Normal | Run `PackerSync` |
 
 
-# LSP
- 1- Signature help = ctrl + h        "i"
- 2- diagnostic = space + v + d   "n"
- 3- diagnostic = space + v + d   "n"
- 4- Definition = g + d                  "n"
- 5- Go to Next= [ + d                  "n"
- 6- Go to Previous= ] + d            "n"
- 7- Rename = space + v + r + r  "n"
-
-# NAV
-
-1- Jump directly to a specifique line = line_number + G
-2- repeat the last F or T searche = ;
-3- repeat the last F or T searche in the opposite direction = ,
 
 
-# insert
 
-1- put cursor below the current line = o
-2- put cursor above the current line = O
-3- insert at the end of the word = ea
+# Basic Vim cmds knowledge
 
-
-# del
-
-1- Delete Inside = di"
-2- Delete Around = da"
-3- delete inside { = di{
-4- delete inside tag = dit
-
-# change
-
-1- change inside "" = ci"
-2- change inside ( = ci(
-3- change around { = ca{
-
-# misc
-
-Search anything in a file and "n" to go to the next occcurence and "shift + n" to go to the previous one = \
-
-delete the following line or word after the cursor = shift + c
-
-delete everthing that is inside of soomething including spaces = diW
-
-select inside a tag = vit
-
-select outside a tag = vat
-
-# regex
-
-1- Find and replace all (Nuclear option)
-cmd: :%s/old_word/new_word/g
-
-% -> the whole file
-s -> subsitute
-g -> global
-
-2- find and replace all but with confirmation
-cmd: :%s/old_word/new_word/gc
-y => ys to all
-n => no (skip this one and move to next)
-a => all(replace all)
-q => quit(stop right there)
-L => Replace this one and stop
+| Category                      | Command                    | Action                                                                       |
+| ----------------------------- | -------------------------- | ---------------------------------------------------------------------------- |
+| Navigation                    | `line_number + G`          | Jump directly to a specific line                                             |
+| Navigation                    | `;`                        | Repeat last `f` or `t` search                                                |
+| Navigation                    | `,`                        | Repeat last `f` or `t` search in opposite direction                          |
+| Insert                        | `o`                        | Insert a new line below current line                                         |
+| Insert                        | `O`                        | Insert a new line above current line                                         |
+| Insert                        | `ea`                       | Insert at the end of the word                                                |
+| Delete                        | `di"`                      | Delete inside quotes                                                         |
+| Delete                        | `da"`                      | Delete around quotes                                                         |
+| Delete                        | `di{`                      | Delete inside `{}`                                                           |
+| Delete                        | `dit`                      | Delete inside tag                                                            |
+| Change                        | `ci"`                      | Change inside quotes                                                         |
+| Change                        | `ci(`                      | Change inside parentheses                                                    |
+| Change                        | `ca{`                      | Change around `{}`                                                           |
+| Misc                          | `n`                        | Go to next search occurrence                                                 |
+| Misc                          | `Shift + N`                | Go to previous search occurrence                                             |
+| Misc                          | `Shift + C`                | Delete everything after the cursor in the line                               |
+| Misc                          | `diW`                      | Delete everything inside a word including spaces                             |
+| Misc                          | `vit`                      | Select inside a tag                                                          |
+| Misc                          | `vat`                      | Select around a tag                                                          |
+| Regex / Replace               | `:%s/old_word/new_word/g`  | Replace all occurrences in file                                              |
+| Regex / Replace               | `:%s/old_word/new_word/gc` | Replace with confirmation (`y`=yes, `n`=no, `a`=all, `q`=quit, `l`=this one) |
+| Select & Edit Next Occurrence | `*`                        | Highlight all occurrences of word under cursor                               |
+| Select & Edit Next Occurrence | `cgn`                      | Change current highlighted occurrence                                        |
+| Select & Edit Next Occurrence | `.`                        | Repeat last change on next occurrence                                        |
 
 
-# Important summary
-
-i = inside
-a = around
-t = till
-
-# how to select and edit next occurence
-
-1- Place your cursor on the word.
-2- Press * to highlight all occurrences of that word in the file.
-3-Press cgn to change the current one.
-4-Type your new word.
-5- Press . to repeat the change on the next highlighted word.
-
-go to this link to learn more about the keybinds https://vim.rtorr.com/

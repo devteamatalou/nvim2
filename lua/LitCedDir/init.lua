@@ -1,6 +1,6 @@
 vim.g.mapleader = " "
+require("LitCedDir.set")
 require("LitCedDir.lazy")
 require("LitCedDir.remap")
-require("LitCedDir.set")
 require("LitCedDir.autocmds")
 require("LitCedDir.ibl")

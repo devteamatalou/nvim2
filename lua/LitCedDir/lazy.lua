@@ -1,146 +1,165 @@
 -- Bootstrap lazy.nvim
 local lazypath = vim.fn.stdpath("data") .. "/lazy/lazy.nvim"
 if not vim.loop.fs_stat(lazypath) then
-  vim.fn.system({
-    "git", "clone", "--filter=blob:none",
-    "https://github.com/folke/lazy.nvim.git",
-    "--branch=stable",
-    lazypath,
-  })
+	vim.fn.system({
+		"git",
+		"clone",
+		"--filter=blob:none",
+		"https://github.com/folke/lazy.nvim.git",
+		"--branch=stable",
+		lazypath,
+	})
 end
 vim.opt.rtp:prepend(lazypath)
 
 require("lazy").setup({
 
-  -- telescope
-  {
-    'nvim-telescope/telescope.nvim',
-    dependencies = { 'nvim-lua/plenary.nvim' }
-  },
+	-- telescope
+	{
+		"nvim-telescope/telescope.nvim",
+		dependencies = { "nvim-lua/plenary.nvim" },
+	},
 
-  -- theme
-  {
-    'rose-pine/neovim',
-    name = 'rose-pine',
-    config = function()
-      vim.cmd("colorscheme rose-pine")
-    end
-  },
+	-- theme
+	{
+		"rose-pine/neovim",
+		name = "rose-pine",
+		config = function()
+			vim.cmd("colorscheme rose-pine")
+		end,
+	},
 
-  -- treesitter
-  {
-    'nvim-treesitter/nvim-treesitter',
-    build = ':TSUpdate'
-  },
+	{
+		"oxfist/night-owl.nvim",
+		name = "night-owl",
+		config = function()
+			vim.cmd("colorscheme night-owl")
+		end,
+	},
 
-  {
-    'ThePrimeagen/harpoon',
-    dependencies = { 'nvim-lua/plenary.nvim' }
-  },
+	-- treesitter
+	{
+		"nvim-treesitter/nvim-treesitter",
+		build = ":TSUpdate",
+	},
 
-  { 'mbbill/undotree' },
-  { 'tpope/vim-fugitive' },
-  { 'lukas-reineke/indent-blankline.nvim' },
+	{
+		"ThePrimeagen/harpoon",
+		dependencies = { "nvim-lua/plenary.nvim" },
+	},
 
-  -- LSP ZERO
-  {
-    'VonHeikemen/lsp-zero.nvim',
-    branch = 'v1.x',
-    dependencies = {
-      'neovim/nvim-lspconfig',
-      'williamboman/mason.nvim',
-      'williamboman/mason-lspconfig.nvim',
+	{ "mbbill/undotree" },
+	{ "tpope/vim-fugitive" },
+	{ "lukas-reineke/indent-blankline.nvim" },
 
-      -- completion
-      'hrsh7th/nvim-cmp',
-      'hrsh7th/cmp-nvim-lsp',
-      'hrsh7th/cmp-buffer',
-      'hrsh7th/cmp-path',
-      'saadparwaiz1/cmp_luasnip',
-      'hrsh7th/cmp-nvim-lua',
+	-- LSP ZERO
+	{
+		"VonHeikemen/lsp-zero.nvim",
+		branch = "v1.x",
+		dependencies = {
+			"neovim/nvim-lspconfig",
+			"williamboman/mason.nvim",
+			"williamboman/mason-lspconfig.nvim",
 
-      -- snippets
-      'L3MON4D3/LuaSnip',
-      'rafamadriz/friendly-snippets',
-    }
-  },
+			-- completion
+			"hrsh7th/nvim-cmp",
+			"hrsh7th/cmp-nvim-lsp",
+			"hrsh7th/cmp-buffer",
+			"hrsh7th/cmp-path",
+			"saadparwaiz1/cmp_luasnip",
+			"hrsh7th/cmp-nvim-lua",
 
-  -- PROJECT ROOT
-  {
-    'ahmedkhalf/project.nvim',
-    config = function()
-      require('project_nvim').setup {
-        patterns = { '.git', 'Makefile', 'package.json' },
-      }
-    end
-  },
+			-- snippets
+			"L3MON4D3/LuaSnip",
+			"rafamadriz/friendly-snippets",
+		},
+	},
 
-  -- AUTOPAIRS
-  {
-    'windwp/nvim-autopairs',
-    config = function()
-      require('nvim-autopairs').setup {}
-    end
-  },
+	-- PROJECT ROOT
+	{
+		"ahmedkhalf/project.nvim",
+		config = function()
+			require("project_nvim").setup({
+				patterns = { ".git", "Makefile", "package.json" },
+			})
+		end,
+	},
 
-  -- BUFFERLINE
-  {
-    'akinsho/bufferline.nvim',
-    version = '*',
-    dependencies = 'nvim-tree/nvim-web-devicons'
-  },
+	-- AUTOPAIRS
+	{
+		"windwp/nvim-autopairs",
+		config = function()
+			require("nvim-autopairs").setup({})
+		end,
+	},
 
-  -- LUALINE
-  {
-    'nvim-lualine/lualine.nvim',
-    dependencies = { 'nvim-tree/nvim-web-devicons' }
-  },
+	-- BUFFERLINE
+	{
+		"akinsho/bufferline.nvim",
+		version = "*",
+		dependencies = "nvim-tree/nvim-web-devicons",
+	},
 
-  { 'windwp/nvim-ts-autotag' },
-  { 'stevearc/conform.nvim' },
+	-- LUALINE
+	{
+		"nvim-lualine/lualine.nvim",
+		dependencies = { "nvim-tree/nvim-web-devicons" },
+	},
 
-  -- terminal
-  {
-    'akinsho/toggleterm.nvim',
-    version = '*',
-  },
+	{ "windwp/nvim-ts-autotag" },
+	{ "stevearc/conform.nvim" },
 
-  -- nvim-tree
-  {
-    'nvim-tree/nvim-tree.lua',
-    dependencies = 'nvim-tree/nvim-web-devicons',
-  },
+	-- terminal
+	{
+		"akinsho/toggleterm.nvim",
+		version = "*",
+	},
 
-  -- Dashboard
-  {
-    'goolord/alpha-nvim',
-    dependencies = 'nvim-tree/nvim-web-devicons',
-  },
+	-- nvim-tree
+	{
+		"nvim-tree/nvim-tree.lua",
+		dependencies = "nvim-tree/nvim-web-devicons",
+	},
 
-  -- noice
-  {
-    'folke/noice.nvim',
-    dependencies = {
-      'MunifTanjim/nui.nvim',
-      'rcarriga/nvim-notify',
-    },
-  },
+	-- Dashboard
+	{
+		"goolord/alpha-nvim",
+		dependencies = "nvim-tree/nvim-web-devicons",
+	},
 
-  { 'rcarriga/nvim-notify' },
-  { 'numtoStr/Comment.nvim' },
-  { 'JoosepAlviste/nvim-ts-context-commentstring' },
-  { 'onsails/lspkind.nvim' },
+	-- noice
+	{
+		"folke/noice.nvim",
+		dependencies = {
+			"MunifTanjim/nui.nvim",
+			"rcarriga/nvim-notify",
+		},
+	},
 
-  -- blink
-  {
-    'saghen/blink.nvim',
-    dependencies = { 'neovim/nvim-lspconfig' },
-  },
+	{ "rcarriga/nvim-notify" },
+	{ "numtoStr/Comment.nvim" },
+	{ "JoosepAlviste/nvim-ts-context-commentstring" },
+	{ "onsails/lspkind.nvim" },
 
-  { 'karb94/neoscroll.nvim' },
+	-- blink
+	{
+		"saghen/blink.nvim",
+		dependencies = { "neovim/nvim-lspconfig" },
+	},
 
+	{ "karb94/neoscroll.nvim" },
 
-  { 'WhoIsSethDaniel/mason-tool-installer.nvim' },
+	{ "WhoIsSethDaniel/mason-tool-installer.nvim" },
 
+	-- night owl theme
 
+	{
+		"oxfist/night-owl.nvim",
+	},
+
+	-- word highlight under cursor
+	{ "RRethy/vim-illuminate" },
+
+	-- multiple cursors (ctrl+d like vscode)
+	{ "mg979/vim-visual-multi" },
 })

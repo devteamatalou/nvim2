@@ -1,4 +1,5 @@
-require("LitCedDir.packer")
+vim.g.mapleader = " "
+require("LitCedDir.lazy")
 require("LitCedDir.remap")
 require("LitCedDir.set")
 require("LitCedDir.autocmds")

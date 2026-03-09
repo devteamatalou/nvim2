@@ -10,7 +10,9 @@ vim.opt.wrap = false
 vim.opt.swapfile = false
 vim.opt.backup = false
 -- Fixed Windows path error:
-vim.opt.undodir = (os.getenv("USERPROFILE") or os.getenv("HOME") or ".") .. "/.vim/undodir"
+local undodir = (os.getenv("USERPROFILE") or os.getenv("HOME") or ".") .. "/.vim/undodir"
+vim.fn.mkdir(undodir, "p")  -- creates the directory if it doesn't exist
+vim.opt.undodir = undodir
 vim.opt.undofile = true
 vim.opt.hlsearch = false
 vim.opt.incsearch = true

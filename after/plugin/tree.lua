@@ -12,6 +12,18 @@ nvim_tree.setup({
 		enable = true,
 		update_root = true,
 	},
+	filesystem_watchers = {
+		enable = true,
+		debounce_delay = 50,
+		ignore_dirs = {
+			"node_modules",
+			".git",
+			"dist",
+			"build",
+			".next",
+			"vendor",
+		},
+	},
 	view = {
 		width = 20,
 		side = "right",

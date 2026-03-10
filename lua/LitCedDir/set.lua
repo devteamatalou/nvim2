@@ -1,4 +1,5 @@
 vim.opt.guicursor = "n-v-c:block,i-ci-ve:ver25"
+vim.opt.shortmess:append("sI")
 vim.opt.nu = true
 vim.opt.relativenumber = true
 vim.opt.tabstop = 2

@@ -113,6 +113,8 @@ require("lazy").setup({
 	{
 		"goolord/alpha-nvim",
 		dependencies = "nvim-tree/nvim-web-devicons",
+    lazy = true,
+    event = "VimEnter",
 	},
 
 	-- noice
@@ -146,5 +148,7 @@ require("lazy").setup({
 
 	--trouble
 	{ "folke/trouble.nvim", dependencies = "nvim-tree/nvim-web-devicons" },
-})
 
+	--Git Conflict rersolution package
+	{ "lewis6991/gitsigns.nvim" },
+})

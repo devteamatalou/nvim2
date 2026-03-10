@@ -1,98 +1,52 @@
 -- lsp.lua
--- Full LSP + Blink + nvim-cmp + conform integration
--- Assumes nvim-cmp and conform are configured separately
-
--- =====================
--- Blink.nvim (inlay hints)
--- =====================
-local blink_ok, blink = pcall(require, "blink.cmp")
-if not blink_ok then return end
-
-local function attach_blink(client, bufnr)
-   if client.server_capabilities.inlayHintProvider then
-      blink.on_attach(client, bufnr)
-   end
-end
-
-local capabilities = blink.get_lsp_capabilities()
-
--- =====================
--- LSP servers
--- =====================
 local lspconfig_ok, lspconfig = pcall(require, "lspconfig")
 if not lspconfig_ok then return end
 
--- Common on_attach for all servers
+local capabilities = require("cmp_nvim_lsp").default_capabilities()
+
 local function common_on_attach(client, bufnr)
-   attach_blink(client, bufnr)
-   vim.api.nvim_buf_set_option(bufnr, "omnifunc", "v:lua.vim.lsp.omnifunc")
-
-   -- Lua formatting on save
-   if vim.bo.filetype == "lua" then
-      vim.api.nvim_create_autocmd("BufWritePre", {
-         buffer = bufnr,
-         callback = function()
-            vim.lsp.buf.format({ bufnr = bufnr, id = client.id })
-         end,
-      })
-   end
-
-   -- PHP / Blade formatting with fallback to conform.nvim
-   if vim.bo.filetype == "php" or vim.bo.filetype == "blade" then
-      vim.api.nvim_create_autocmd("BufWritePre", {
-         buffer = bufnr,
-         callback = function()
-            local ok, _ = pcall(vim.lsp.buf.format)
-            if not ok then
-               local conform_ok, conform = pcall(require, "conform")
-               if conform_ok then
-                  conform.format({ async = false })
-               end
-            end
-         end,
-      })
-   end
+  vim.api.nvim_buf_set_option(bufnr, "omnifunc", "v:lua.vim.lsp.omnifunc")
+  local opts = { noremap = true, silent = true, buffer = bufnr }
+  vim.keymap.set("n", "gd", vim.lsp.buf.definition, opts)
+  vim.keymap.set("n", "K", vim.lsp.buf.hover, opts)
+  vim.keymap.set("n", "gr", vim.lsp.buf.references, opts)
+  vim.keymap.set("n", "<leader>rn", vim.lsp.buf.rename, opts)
+  vim.keymap.set("n", "<leader>ca", vim.lsp.buf.code_action, opts)
+  vim.keymap.set("n", "<leader>e", vim.diagnostic.open_float, opts)
+  vim.keymap.set("n", "[d", vim.diagnostic.goto_prev, opts)
+  vim.keymap.set("n", "]d", vim.diagnostic.goto_next, opts)
 end
 
--- =====================
--- Lua LSP
--- =====================
-lspconfig.lua_ls.setup({
-   capabilities = capabilities,
-   on_attach = common_on_attach,
-})
+lspconfig.lua_ls.setup({ capabilities = capabilities, on_attach = common_on_attach })
+lspconfig.ts_ls.setup({ capabilities = capabilities, on_attach = common_on_attach })
+lspconfig.eslint.setup({ capabilities = capabilities, on_attach = common_on_attach })
 
--- =====================
--- TypeScript / JavaScript
--- =====================
-lspconfig.tsserver.setup({
-   capabilities = capabilities,
-   on_attach = common_on_attach,
-})
-
-lspconfig.eslint.setup({
-   capabilities = capabilities,
-   on_attach = common_on_attach,
-})
-
--- =====================
--- PHP LSP (Intelephense)
--- =====================
 lspconfig.intelephense.setup({
-   capabilities = capabilities,
-   on_attach = common_on_attach,
-   filetypes = { "php", "blade" },
+  capabilities = capabilities,
+  on_attach = common_on_attach,
+  filetypes = { "php", "blade" },
+  single_file_support = true,
+  root_dir = function(fname)
+    return require("lspconfig.util").root_pattern("composer.json", ".git")(fname)
+      or vim.fn.fnamemodify(fname, ":h")
+  end,
 })
 
--- =====================
--- HTML / JSON
--- =====================
 lspconfig.html.setup({
-   capabilities = capabilities,
-   on_attach = common_on_attach,
+  capabilities = capabilities,
+  on_attach = common_on_attach,
+  root_dir = function(fname)
+    return require("lspconfig.util").find_git_ancestor(fname)
+      or require("lspconfig.util").find_node_modules_ancestor(fname)
+      or vim.fn.fnamemodify(fname, ":h")
+  end,
 })
 
-lspconfig.jsonls.setup({
-   capabilities = capabilities,
-   on_attach = common_on_attach,
+lspconfig.emmet_ls.setup({
+  capabilities = capabilities,
+  on_attach = common_on_attach,
+  filetypes = { "html", "css", "javascriptreact", "typescriptreact", "php", "blade" },
 })
+
+lspconfig.jsonls.setup({ capabilities = capabilities, on_attach = common_on_attach })
+lspconfig.cssls.setup({ capabilities = capabilities, on_attach = common_on_attach })

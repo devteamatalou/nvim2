@@ -10,18 +10,24 @@ if not installer_status then return end
 mason.setup()
 
 mason_lspconfig.setup({
-    ensure_installed = { 
-        "intelephense",
-        "eslint",
-        "cssls",
-    }
+  ensure_installed = {
+    "ts_ls",        -- JavaScript / TypeScript / JSX / TSX
+    "intelephense", -- PHP / Blade
+    "eslint",       -- JS/TS linting
+    "html",         -- HTML
+    "cssls",        -- CSS
+    "jsonls",       -- JSON
+    "lua_ls",       -- Lua
+    "emmet_ls",     -- Emmet
+  },
+  automatic_installation = false,
 })
 
 mason_tool_installer.setup({
-    ensure_installed = {
-        "prettier",
-        "php-cs-fixer",
-        "blade-formatter",
-        "stylua"
-    }
+  ensure_installed = {
+    "prettier",        -- JS / TS / JSX / TSX / CSS / HTML
+    "php-cs-fixer",    -- PHP
+    "blade-formatter", -- Blade
+    "stylua",          -- Lua
+  },
 })

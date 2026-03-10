@@ -1,4 +1,4 @@
 require("illuminate").configure({
-	delay = 100,
+	delay = 500,
 	under_cursor = true,
 })

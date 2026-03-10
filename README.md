@@ -4,6 +4,13 @@
 
 ---
 
+## if you get denied for the treesitter**
+
+Remove-Item -Recurse -Force "$env:LOCALAPPDATA\Temp\nvim"
+$env:CC="clang"
+
+---
+
 ## File Explorer
 
 | Key          | Mode   | Action                  |
@@ -260,4 +267,12 @@
 | `:%s/old/new/gc`            | Replace with confirmation              |
 
 
+### trouble Diagnostics window
 
+|Key           | Mode   | Action
+|--------------|--------|---------------------------
+|<leader>d     | Normal | Toggle diagnostics panel
+|<leader>dw    | Normal | File diagnostics only
+|<leader>dc    | Normal | Close diagnostics panel
+|j / k         | Normal | Navigate errors in panel
+|<CR>          | Normal | Jump to error location

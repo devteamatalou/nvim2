@@ -40,3 +40,11 @@ vim.keymap.set("n", "<leader>w", ":w<CR>", { silent = true })
 
 -- quit vim
 vim.keymap.set("n", "<leader>q", ":q<CR>", { silent = true })
+
+-- remaping the buffer selections so it dont open random files anymore
+
+vim.keymap.set("n", "<C-o>", "<cmd>BufferLineCyclePrev<CR>", { desc = "Previous buffer" })
+vim.keymap.set("n", "<C-i>", "<cmd>BufferLineCycleNext<CR>", { desc = "Next buffer" })
+
+-- format the whole file
+vim.keymap.set("n", "<leader>ri", "gg=G<C-o>", { desc = "Reindent entire file" })

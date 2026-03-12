@@ -42,6 +42,7 @@ cmp.setup({
 		{ name = "nvim_lsp", priority = 1000 },
 		{ name = "path", priority = 750 },
 		{ name = "buffer", priority = 500 },
+		{ name = "emoji", priority = 250 },
 	}),
 	completion = {
 		completeopt = "menu,menuone,noinsert,noselect",

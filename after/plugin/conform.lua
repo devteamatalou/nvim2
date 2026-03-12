@@ -9,7 +9,7 @@ conform.setup({
 		typescript = { "prettier" },
 		javascriptreact = { "prettier" },
 		typescriptreact = { "prettier" },
-		php = { "phpcbf" },
+		php = { "php-cs-fixer" },
 		css = { "prettier" },
 		html = { "prettier" },
 		json = { "prettier" },

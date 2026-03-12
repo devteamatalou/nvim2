@@ -40,5 +40,8 @@ vim.opt.timeoutlen = 300
 vim.opt.autoindent = true
 vim.opt.splitbelow = true
 vim.opt.splitright = true
---vim.opt.splitkeep = true
+vim.opt.splitkeep = "cursor"
 vim.opt.formatoptions:append({ "r" })
+vim.opt.path:append({ "**" })
+vim.opt.wildignore:append({ "*/node_modules/*" })
+vim.opt.backspace = { "start", "eol", "indent" }

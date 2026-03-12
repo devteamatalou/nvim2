@@ -1,4 +1,5 @@
 vim.g.mapleader = " "
+
 vim.keymap.set("n", "<leader>pv", vim.cmd.Ex, { desc = "go back to directory" })
 
 --set the cursor to the middle when scrolling down and up
@@ -48,3 +49,20 @@ vim.keymap.set("n", "<C-i>", "<cmd>BufferLineCycleNext<CR>", { desc = "Next buff
 
 -- format the whole file
 vim.keymap.set("n", "<leader>ri", "gg=G<C-o>", { desc = "Reindent entire file" })
+
+--split tab
+vim.keymap.set("n", "ss", ":split<Return>", { noremap = true, silent = true })
+vim.keymap.set("n", "sv", ":vsplit<Return>", { noremap = true, silent = true })
+
+--move window
+vim.keymap.set("n", "sh", "<C-w>h")
+vim.keymap.set("n", "sk", "<C-w>k")
+vim.keymap.set("n", "sj", "<C-w>j")
+vim.keymap.set("n", "sl", "<C-w>l")
+vim.keymap.set("n", "sx", "<C-w>q", { noremap = true, silent = true, desc = "Close window" })
+
+--Resize Window
+vim.keymap.set("n", "<C-w><left>", "<C-w><")
+vim.keymap.set("n", "<C-w><right>", "<C-w>>")
+vim.keymap.set("n", "<C-w><up>", "<C-w>+")
+vim.keymap.set("n", "<C-w><down>", "<C-w>-")

@@ -1,16 +1,18 @@
 local status, bufferline = pcall(require, "bufferline")
-if not status then return end
+if not status then
+	return
+end
 
 bufferline.setup({
-    options = {
-        mode = "buffers",
-        separator_style = "slant", -- This makes the tabs look like sloped folders
-        always_show_bufferline = true,
-        show_buffer_close_icons = true,
-        show_close_icon = true,
-        color_icons = true,
-        diagnostics = "nvim_lsp", -- Shows red/yellow dots if your TS/PHP has errors
-    }
+	options = {
+		mode = "buffers",
+		separator_style = "slant", -- This makes the tabs look like sloped folders
+		always_show_bufferline = false,
+		show_buffer_close_icons = true,
+		show_close_icon = true,
+		color_icons = true,
+		diagnostics = "nvim_lsp", -- Shows red/yellow dots if your TS/PHP has errors
+	},
 })
 
 -- KEYBINDS: Easy tab switching

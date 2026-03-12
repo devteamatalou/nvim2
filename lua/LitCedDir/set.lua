@@ -1,3 +1,7 @@
+vim.scriptencoding = "utf-8"
+vim.opt.encoding = "utf-8"
+vim.opt.fileencoding = "utf-8"
+
 vim.opt.guicursor = "n-v-c:block,i-ci-ve:ver25"
 vim.opt.shortmess:append("sI")
 vim.opt.nu = true
@@ -7,8 +11,7 @@ vim.opt.softtabstop = 2
 vim.opt.shiftwidth = 2
 vim.opt.expandtab = true
 vim.opt.smartindent = true
-vim.opt.wrap = true
-vim.opt.linebreak = true
+vim.opt.wrap = false
 vim.opt.swapfile = false
 vim.opt.backup = false
 -- Fixed Windows path error:
@@ -29,4 +32,13 @@ vim.opt.cmdheight = 0
 vim.opt.cmdwinheight = 1
 vim.opt.laststatus = 3
 vim.opt.showmode = false
+vim.opt.showtabline = 0
 vim.opt.ruler = false
+vim.opt.cursorline = true
+vim.opt.grepprg = "rg ----vimgrep"
+vim.opt.timeoutlen = 300
+vim.opt.autoindent = true
+vim.opt.splitbelow = true
+vim.opt.splitright = true
+--vim.opt.splitkeep = true
+vim.opt.formatoptions:append({ "r" })
